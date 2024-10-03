@@ -1,6 +1,22 @@
-spring:
-  application:
-    name: Server App
-
+# set port server
 server:
   port: 9000
+
+spring:
+  # set name app
+  application:
+    name: Server App
+  # setup database connection
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/sibkm_serverapp_07
+    username: fuzi
+    password: kucing
+  # setup hibernate jpa
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
