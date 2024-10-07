@@ -14,14 +14,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_region")
-public class Region {
+@Table(name = "tb_country")
+public class Country {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "region_id")
+  @Column(name = "country_id")
   private Integer id;
 
-  @Column(name = "region_name", nullable = false, unique = true, length = 20)
+  @Column(name = "country_code", length = 2, unique = true, nullable = false)
+  private String code;
+
+  @Column(name = "country_name", length = 20, unique = true, nullable = false)
   private String name;
 }
