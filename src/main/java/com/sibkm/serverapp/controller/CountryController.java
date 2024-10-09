@@ -2,8 +2,10 @@ package com.sibkm.serverapp.controller;
 
 import com.sibkm.serverapp.entity.Country;
 import com.sibkm.serverapp.model.request.CountryRequest;
+import com.sibkm.serverapp.model.response.CountryResponse;
 import com.sibkm.serverapp.service.CountryService;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,18 @@ public class CountryController {
   @GetMapping("{id}")
   public Country getById(@PathVariable Integer id) {
     return countryService.getById(id);
+  }
+
+  // custome response for getById
+  @GetMapping("/res/{id}")
+  public CountryResponse getByIdCustomeResponse(@PathVariable Integer id) {
+    return countryService.getByIdCustomeResponse(id);
+  }
+
+  // custom response for getById with Map
+  @GetMapping("/map/{id}")
+  public Map<String, Object> getByIdCustomMap(@PathVariable Integer id) {
+    return countryService.getByIdCustomMap(id);
   }
 
   // tanpa dto

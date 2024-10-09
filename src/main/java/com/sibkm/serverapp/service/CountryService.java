@@ -3,8 +3,11 @@ package com.sibkm.serverapp.service;
 import com.sibkm.serverapp.entity.Country;
 import com.sibkm.serverapp.entity.Region;
 import com.sibkm.serverapp.model.request.CountryRequest;
+import com.sibkm.serverapp.model.response.CountryResponse;
 import com.sibkm.serverapp.repository.CountryRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,48 @@ public class CountryService {
           "Country not found!!!"
         )
       );
+  }
+
+  // custome response for getById
+  public CountryResponse getByIdCustomeResponse(Integer id) {
+    // Country country = countryRepository.findById(id).get();
+    Country country = countryRepository
+      .findById(id)
+      .orElseThrow(() ->
+        new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Country not found!!!"
+        )
+      );
+    CountryResponse countryResponse = new CountryResponse();
+
+    countryResponse.setCountryId(country.getId());
+    countryResponse.setCountryCode(country.getCode());
+    countryResponse.setCountryName(country.getName());
+    countryResponse.setRegionId(country.getRegion().getId());
+    countryResponse.setRegionName(country.getRegion().getName());
+    return countryResponse;
+  }
+
+  // custom response for getById with Map
+  public Map<String, Object> getByIdCustomMap(Integer id) {
+    Country country = countryRepository
+      .findById(id)
+      .orElseThrow(() ->
+        new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          "Country not found!!!"
+        )
+      );
+    Map<String, Object> result = new HashMap<>();
+
+    result.put("cId", country.getId());
+    result.put("cCode", country.getCode());
+    result.put("cName", country.getName());
+    result.put("rId", country.getRegion().getId());
+    result.put("rName", country.getRegion().getName());
+
+    return result;
   }
 
   // tanpa dto
