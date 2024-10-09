@@ -1,6 +1,7 @@
 package com.sibkm.serverapp.controller;
 
 import com.sibkm.serverapp.entity.Country;
+import com.sibkm.serverapp.model.request.CountryRequest;
 import com.sibkm.serverapp.service.CountryService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -31,9 +32,22 @@ public class CountryController {
     return countryService.getById(id);
   }
 
+  // tanpa dto
   @PostMapping
   public Country create(@RequestBody Country country) {
     return countryService.create(country);
+  }
+
+  // dengan dto secara manual
+  @PostMapping("/dto-manual")
+  public Country createDTOManual(@RequestBody CountryRequest countryRequest) {
+    return countryService.createDTOManual(countryRequest);
+  }
+
+  // dengan dto secara otomatis
+  @PostMapping("/dto-otomatis")
+  public Country createDTOOtomatis(@RequestBody CountryRequest countryRequest) {
+    return countryService.createDTOOtomatis(countryRequest);
   }
 
   @PutMapping("{id}")
