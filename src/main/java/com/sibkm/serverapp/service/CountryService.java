@@ -80,6 +80,26 @@ public class CountryService {
 
   // tanpa dto
   public Country create(Country country) {
+    /**
+     * Challenge: Kenapa bisa dan tidak bisa memasukkan nama yang sama dengan region?
+     * 1. bug
+     * 2. penyebab
+     * 3. cara solve?
+     */
+
+    if (
+      !countryRepository
+        .findByNameOrRegionName(
+          country.getName(),
+          country.getRegion().getName()
+        )
+        .isEmpty()
+    ) {
+      throw new ResponseStatusException(
+        HttpStatus.CONFLICT,
+        "Name is already exisits!!!"
+      );
+    }
     return countryRepository.save(country);
   }
 
@@ -98,6 +118,27 @@ public class CountryService {
 
   // dengan dto secara otomatis
   public Country createDTOOtomatis(CountryRequest countryRequest) {
+    /**
+     * Challenge: Kenapa bisa dan tidak bisa memasukkan nama yang sama dengan region?
+     * 1. bug
+     * 2. penyebab
+     * 3. cara solve?
+     */
+
+    if (
+      !countryRepository
+        .findByNameOrRegionName(
+          countryRequest.getName(),
+          countryRequest.getName()
+        )
+        .isEmpty()
+    ) {
+      throw new ResponseStatusException(
+        HttpStatus.CONFLICT,
+        "Name is already exisits!!!"
+      );
+    }
+
     Country country = new Country();
     BeanUtils.copyProperties(countryRequest, country);
 
