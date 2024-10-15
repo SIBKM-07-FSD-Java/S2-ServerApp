@@ -31,3 +31,7 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    user:
+      name: user
+      password: user
