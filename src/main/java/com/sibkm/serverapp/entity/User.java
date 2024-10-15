@@ -1,7 +1,10 @@
 package com.sibkm.serverapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -33,9 +36,10 @@ public class User {
   @OneToOne
   @MapsId
   @JoinColumn(name = "id")
+  @JsonProperty(access = Access.WRITE_ONLY)
   private Employee employee;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
     name = "tb_tr_user_role",
     joinColumns = @JoinColumn(name = "user_id"),
