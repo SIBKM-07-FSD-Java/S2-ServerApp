@@ -5,6 +5,7 @@ import com.sibkm.serverapp.entity.Role;
 import com.sibkm.serverapp.model.request.RegistrationRequest;
 import com.sibkm.serverapp.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ public class AuthController {
   }
 
   @PostMapping("/add-role/{idEmployee}")
+  @PreAuthorize("hasRole('ADMIN')")
   public Employee addRole(
     @PathVariable Integer idEmployee,
     @RequestBody Role role
