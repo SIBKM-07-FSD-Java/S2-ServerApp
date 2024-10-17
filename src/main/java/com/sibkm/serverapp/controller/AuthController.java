@@ -2,7 +2,9 @@ package com.sibkm.serverapp.controller;
 
 import com.sibkm.serverapp.entity.Employee;
 import com.sibkm.serverapp.entity.Role;
+import com.sibkm.serverapp.model.request.LoginRequest;
 import com.sibkm.serverapp.model.request.RegistrationRequest;
+import com.sibkm.serverapp.model.response.LoginResponse;
 import com.sibkm.serverapp.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,5 +35,10 @@ public class AuthController {
     @RequestBody Role role
   ) {
     return authService.addRole(idEmployee, role);
+  }
+
+  @PostMapping("/login")
+  public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    return authService.login(loginRequest);
   }
 }
