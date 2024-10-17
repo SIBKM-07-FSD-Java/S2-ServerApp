@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,24 +21,20 @@ public class AuthService {
   private EmployeeService employeeService;
   private RoleService roleService;
   private UserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
 
   public Employee registration(RegistrationRequest registrationRequest) {
     // ? setup data employee & user
     Employee employee = new Employee();
     User user = new User();
 
-    /** cara panjang */
-    // employee.setName(registrationRequest.getName());
-    // employee.setEmail(registrationRequest.getEmail());
-    // employee.setPhone(registrationRequest.getPhone());
-
-    // user.setUsername(registrationRequest.getUsername());
-    // user.setPassword(registrationRequest.getPassword());
-
-    /** cara singkat */
     BeanUtils.copyProperties(registrationRequest, employee);
     BeanUtils.copyProperties(registrationRequest, user);
 
+    // set password
+    user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+
+    // add role
     List<Role> roles = Collections.singletonList(roleService.getById(1));
     user.setRoles(roles);
 

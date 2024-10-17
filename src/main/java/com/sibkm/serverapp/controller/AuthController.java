@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping
 public class AuthController {
 
   private AuthService authService;
 
-  @PostMapping
+  @PostMapping("/registration")
   public Employee registration(
     @RequestBody RegistrationRequest registrationRequest
   ) {
     return authService.registration(registrationRequest);
   }
 
-  @PostMapping("/{idEmployee}")
+  @PostMapping("/add-role/{idEmployee}")
   public Employee addRole(
     @PathVariable Integer idEmployee,
     @RequestBody Role role
