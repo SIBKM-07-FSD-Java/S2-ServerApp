@@ -6,6 +6,8 @@ import com.sibkm.serverapp.model.request.LoginRequest;
 import com.sibkm.serverapp.model.request.RegistrationRequest;
 import com.sibkm.serverapp.model.response.LoginResponse;
 import com.sibkm.serverapp.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +40,11 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-    return authService.login(loginRequest);
+  public LoginResponse login(
+    @RequestBody LoginRequest loginRequest,
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) {
+    return authService.login(loginRequest, request, response);
   }
 }

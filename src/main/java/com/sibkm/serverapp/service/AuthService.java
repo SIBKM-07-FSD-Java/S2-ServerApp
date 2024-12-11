@@ -8,6 +8,8 @@ import com.sibkm.serverapp.model.request.RegistrationRequest;
 import com.sibkm.serverapp.model.response.LoginResponse;
 import com.sibkm.serverapp.repository.EmployeeRepository;
 import com.sibkm.serverapp.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,9 +19,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +36,8 @@ public class AuthService {
   private PasswordEncoder passwordEncoder;
   private AuthenticationManager authManager;
   private AppUserDetailService appUserDetailService;
+  private SecurityContextHolderStrategy securityContextHolderStrategy;
+  private SecurityContextRepository securityContextRepository;
 
   public Employee registration(RegistrationRequest registrationRequest) {
     // ? setup data employee & user
@@ -70,17 +75,30 @@ public class AuthService {
     return employee;
   }
 
-  public LoginResponse login(LoginRequest loginRequest) {
-    // todo: authentication
+  // todo: customize login
+  public LoginResponse login(
+    LoginRequest loginRequest,
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) {
+    // ? authentication
     UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(
       loginRequest.getUsername(),
       loginRequest.getPassword()
     );
 
-    // todo: set principle
+    // ? set principle
     Authentication auth = authManager.authenticate(authReq);
-    SecurityContext sc = SecurityContextHolder.getContext();
-    sc.setAuthentication(auth);
+
+    // ? set SecurityContext & set authentication
+    SecurityContext context = securityContextHolderStrategy.createEmptyContext();
+    context.setAuthentication(auth);
+
+    // ? save SecurityContext into securityContextHolderStrategy
+    securityContextHolderStrategy.setContext(context);
+
+    // ? save into repository SecurityContext
+    securityContextRepository.saveContext(context, request, response);
 
     // ? get username for login response
     UserDetails userDetails = appUserDetailService.loadUserByUsername(
