@@ -39,7 +39,7 @@ public class AuthController {
     return authService.addRole(idEmployee, role);
   }
 
-  @PostMapping("/login")
+  @PostMapping("/auth/login")
   public LoginResponse login(
     @RequestBody LoginRequest loginRequest,
     HttpServletRequest request,

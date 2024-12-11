@@ -36,7 +36,7 @@ public class AppSecurityConfig {
         auth
           .requestMatchers(HttpMethod.POST, "/registration")
           .permitAll()
-          .requestMatchers(HttpMethod.POST, "/login")
+          .requestMatchers(HttpMethod.POST, "/auth/login")
           .permitAll()
           .anyRequest()
           .authenticated()
